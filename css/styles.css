@@ -560,7 +560,7 @@ strong {
   background: radial-gradient(
     ellipse at 72% 40%,
     rgba(192, 57, 43, 0.07) 0%,
-    transparent 68%
+    rgba(192, 57, 43, 0) 68%
   );
   pointer-events: none;
 }
@@ -709,6 +709,16 @@ strong {
 }
 .event-name {
   font-weight: 500;
+}
+a.event-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-light);
+  transition: color var(--t), text-decoration-color var(--t);
+}
+a.event-name:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }
 .event-venue {
   font-size: 0.85rem;
