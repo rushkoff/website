@@ -238,10 +238,11 @@ strong {
 }
 
 .nav-logo {
-  font-family: var(--font-serif);
+  font-family: 'Oswald', sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text);
   flex-shrink: 0;
 }
@@ -586,6 +587,11 @@ strong {
 
 .hero h1 {
   margin-bottom: 1.5rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
 }
 
 .hero-image {
@@ -1673,9 +1679,11 @@ a.event-name:hover {
 }
 
 .footer-logo {
-  font-family: var(--font-serif);
+  font-family: 'Oswald', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text);
   margin-bottom: 0.75rem;
 }
