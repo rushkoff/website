@@ -36,6 +36,10 @@ function _init() {
   initTheme();
   initThemePicker();
 
+  if (document.getElementById('team-human-video')) {
+    initTeamHumanVideo();
+  }
+
   if (document.querySelector('.photo-grid')) {
     initLightbox();
   }
@@ -51,6 +55,50 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', _init);
 } else {
   _init();
+}
+
+
+/* ========================
+   TEAM HUMAN LATEST VIDEO
+======================== */
+function initTeamHumanVideo() {
+  var link  = document.getElementById('team-human-link');
+  var thumb = document.getElementById('team-human-thumb');
+  var wrap  = document.getElementById('team-human-wrap');
+  if (!link || !thumb || !wrap) return;
+
+  // Try to fetch the latest video from the channel RSS feed
+  var channelId = link.dataset.channel;
+  var feedUrl   = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
+  var proxyUrl  = 'https://api.allorigins.win/get?url=' + encodeURIComponent(feedUrl);
+
+  fetch(proxyUrl)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var match   = data.contents.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+      var videoId = match && match[1];
+      if (!videoId) return;
+      // Update thumbnail and store the fresh video ID
+      link.dataset.videoid = videoId;
+      thumb.src = 'https://i.ytimg.com/vi/' + videoId + '/maxresdefault.jpg';
+      thumb.onerror = function() {
+        thumb.src = 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg';
+        thumb.onerror = null;
+      };
+    });
+  // If fetch fails, the hardcoded fallback video ID stays — no visible error
+
+  // Click-to-play: swap thumbnail for embedded iframe on click
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var videoId = link.dataset.videoid;
+    var iframe  = document.createElement('iframe');
+    iframe.src  = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0';
+    iframe.title = 'Team Human — latest episode';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    wrap.replaceChildren(iframe);
+  });
 }
 
 
