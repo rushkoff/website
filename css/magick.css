@@ -1,0 +1,437 @@
+/* ====================================================
+   MAGICK THEME
+   Occult, alchemical, esoteric aesthetic
+   Applied when <body class="magick">
+==================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+
+/* ── Custom property overrides ─────────────────── */
+body.magick {
+  --bg:           #09070d;
+  --bg-alt:       #0e0a16;
+  --bg-card:      #110d1a;
+  --text:         #e2d5b5;
+  --text-muted:   #8a7a9f;
+  --text-sub:     #b09dc0;
+  --accent:       #c9a84c;
+  --accent-light: #e2c06e;
+  --border:       #231840;
+  --border-light: #3a2860;
+  --nav-bg:       rgba(9, 7, 13, 0.97);
+  --font-sans:    'Cinzel', 'Palatino Linotype', Palatino, serif;
+  --font-serif:   'EB Garamond', Garamond, 'Times New Roman', serif;
+  --font-mono:    'Courier New', Courier, monospace;
+  --radius:       2px;
+  --radius-lg:    4px;
+  --shadow:       0 4px 40px rgba(201, 168, 76, 0.08);
+}
+
+
+/* ── Vignette / ritual aura overlay ────────────── */
+body.magick::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    transparent 25%,
+    rgba(20, 5, 38, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 9997;
+}
+
+
+/* ── Headings ───────────────────────────────────── */
+body.magick h1,
+body.magick h2,
+body.magick h3,
+body.magick h4 {
+  font-family: 'Cinzel', 'Palatino Linotype', serif;
+  color: #c9a84c;
+  letter-spacing: 0.08em;
+}
+
+body.magick h1 { animation: mk-candleflicker 7s ease-in-out infinite; }
+body.magick h2 { text-shadow: 0 0 14px rgba(201, 168, 76, 0.45); }
+body.magick h3,
+body.magick h4 { text-shadow: 0 0 8px rgba(201, 168, 76, 0.3); }
+
+@keyframes mk-candleflicker {
+  0%,  100% { text-shadow: 0 0 18px rgba(201, 168, 76, 0.65), 0 0 50px rgba(201, 168, 76, 0.18); }
+  30%        { text-shadow: 0 0 12px rgba(201, 168, 76, 0.45), 0 0 28px rgba(201, 168, 76, 0.1); }
+  50%        { text-shadow: 0 0 24px rgba(201, 168, 76, 0.8),  0 0 70px rgba(201, 168, 76, 0.25); }
+  70%        { text-shadow: 0 0 10px rgba(201, 168, 76, 0.4),  0 0 22px rgba(201, 168, 76, 0.08); }
+}
+
+
+/* ── Labels ─────────────────────────────────────── */
+body.magick .label {
+  font-family: 'Cinzel', serif;
+  color: #9b72cf;
+  text-shadow: 0 0 8px rgba(155, 114, 207, 0.45);
+  font-size: 0.6rem;
+  letter-spacing: 0.32em;
+}
+
+
+/* ── Accent line ────────────────────────────────── */
+body.magick .accent-line {
+  background: linear-gradient(90deg, transparent, #c9a84c, #9b72cf, #c9a84c, transparent);
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.4);
+}
+
+
+/* ── Links ──────────────────────────────────────── */
+body.magick a:not([class*="btn"]):not(.nav-logo):not(.nav-links a) {
+  color: #c9a84c;
+}
+body.magick a:not([class*="btn"]):not(.nav-logo):not(.nav-links a):hover {
+  color: #e2c06e;
+  text-shadow: 0 0 8px rgba(226, 192, 110, 0.55);
+}
+
+
+/* ── Navigation ─────────────────────────────────── */
+body.magick .nav-logo {
+  font-family: 'Cinzel', serif !important;
+  color: #c9a84c !important;
+  text-shadow: 0 0 12px rgba(201, 168, 76, 0.65);
+  font-size: 0.9rem !important;
+  letter-spacing: 0.18em;
+}
+body.magick .site-nav {
+  border-bottom: 1px solid #231840;
+  box-shadow: 0 2px 24px rgba(201, 168, 76, 0.04), 0 1px 0 #160f25;
+}
+body.magick .nav-links a,
+body.magick .nav-dropdown > button {
+  font-family: 'Cinzel', serif;
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+}
+body.magick .nav-links a:hover,
+body.magick .nav-dropdown > button:hover {
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.05);
+}
+body.magick .nav-links a.active          { color: #c9a84c; }
+body.magick .nav-links a.active::after   { background: #c9a84c; box-shadow: 0 0 6px rgba(201, 168, 76, 0.5); }
+body.magick .dropdown-menu {
+  background: #0e0a16;
+  border-color: #2a1d40;
+  font-size: 0.7rem;
+}
+
+
+/* ── Buttons ────────────────────────────────────── */
+body.magick .btn-primary {
+  background: #c9a84c;
+  color: #09070d;
+  border: 1px solid #c9a84c;
+  font-family: 'Cinzel', serif;
+  box-shadow: 0 0 16px rgba(201, 168, 76, 0.3);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+}
+body.magick .btn-primary:hover {
+  background: #9b72cf;
+  border-color: #9b72cf;
+  color: #fff;
+  box-shadow: 0 0 22px rgba(155, 114, 207, 0.45);
+}
+body.magick .btn-outline {
+  border-color: #3a2860;
+  color: #c9a84c;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+}
+body.magick .btn-outline:hover {
+  border-color: #c9a84c;
+  background: rgba(201, 168, 76, 0.06);
+}
+
+
+/* ── Images: aged sepia tint ────────────────────── */
+body.magick img {
+  filter: sepia(35%) saturate(0.85) contrast(1.05) brightness(0.85);
+  outline: 1px solid #2a1d40;
+  outline-offset: 3px;
+}
+
+
+/* ── Cards ──────────────────────────────────────── */
+body.magick .contact-card,
+body.magick .archive-card,
+body.magick .featured-card {
+  border-color: #2a1d40;
+  border-width: 1px;
+  box-shadow: 0 0 22px rgba(201, 168, 76, 0.05), inset 0 0 40px rgba(9, 7, 13, 0.5);
+}
+body.magick .archive-card-icon {
+  color: #9b72cf;
+  text-shadow: 0 0 8px rgba(155, 114, 207, 0.45);
+}
+
+
+/* ── Book grid ──────────────────────────────────── */
+body.magick .book-title {
+  font-family: 'Cinzel', serif;
+  color: #c9a84c;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+body.magick .book-cover {
+  box-shadow: 0 0 26px rgba(201, 168, 76, 0.18), 0 0 8px rgba(155, 114, 207, 0.08);
+}
+body.magick .book-card {
+  border: 1px solid #231840;
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.03);
+}
+
+
+/* ── Films ──────────────────────────────────────── */
+body.magick .film-thumb-wrap {
+  border: 1px solid #2a1d40;
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.08);
+}
+body.magick .film-link {
+  font-family: 'Cinzel', serif;
+  color: #c9a84c;
+  font-size: 0.82rem;
+}
+body.magick .film-link:hover {
+  color: #9b72cf;
+  text-shadow: 0 0 8px rgba(155, 114, 207, 0.45);
+}
+
+
+/* ── Section & list dividers ────────────────────── */
+body.magick .section + .section        { border-top: 1px solid #1e1432; }
+body.magick .press-item                { border-bottom-color: #231840; }
+body.magick .press-item:hover          { background: rgba(201, 168, 76, 0.03); }
+body.magick .event-item                { border-bottom-color: #231840; }
+body.magick .event-item:first-child    { border-top-color: #231840; }
+
+
+/* ── About / creds ──────────────────────────────── */
+body.magick .role-pill {
+  border-color: #3a2860;
+  color: #8a7a9f;
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  padding: 3px 10px;
+}
+body.magick .cred-item {
+  border-bottom-color: #231840;
+  font-size: 0.88rem;
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+body.magick .cred-item::before { color: #9b72cf; }
+
+
+/* ── Press badge ────────────────────────────────── */
+body.magick .press-badge {
+  border-color: #3a2860;
+  color: #8a7a9f;
+  font-size: 0.6rem;
+}
+
+
+/* ── Press TOC ──────────────────────────────────── */
+body.magick .press-toc-wrap {
+  border-bottom-color: #231840;
+  background: rgba(9, 7, 13, 0.95);
+}
+body.magick .press-toc a {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+
+
+/* ── Photo grid ─────────────────────────────────── */
+body.magick .photo-grid figure {
+  border: 1px solid #2a1d40;
+  box-shadow: 0 0 14px rgba(201, 168, 76, 0.06);
+}
+
+
+/* ── Hero section ───────────────────────────────── */
+body.magick .hero {
+  padding-top: calc(var(--nav-height) + 36px);
+  padding-bottom: 44px;
+}
+
+
+/* ── Footer ─────────────────────────────────────── */
+body.magick .site-footer {
+  border-top: 1px solid #1e1432;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+body.magick .footer-logo {
+  font-family: 'Cinzel', serif;
+  color: #c9a84c;
+  text-shadow: 0 0 10px rgba(201, 168, 76, 0.45);
+}
+body.magick .footer-col h4 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+}
+
+
+/* ── Injected sigil / ring layer ────────────────── */
+#magick-decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.mk-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.mk-ring-1 { width: 300px;  height: 300px;  border: 1px dashed rgba(255, 255, 255, 0.07); }
+.mk-ring-2 { width: 550px;  height: 550px;  border: 1px dashed rgba(255, 255, 255, 0.045); }
+.mk-ring-3 { width: 820px;  height: 820px;  border: 1px dashed rgba(255, 255, 255, 0.028); }
+.mk-ring-4 { width: 1100px; height: 1100px; border: 1px dashed rgba(201, 168, 76, 0.035);
+             animation: mk-rotate 130s linear infinite; }
+
+@keyframes mk-rotate {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.mk-sigil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(500px, 88vmin);
+  height: min(500px, 88vmin);
+}
+
+
+/* ── Corner bracket marks ───────────────────────── */
+body.magick .page-header { position: relative; }
+body.magick .page-header::before,
+body.magick .page-header::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+body.magick .page-header::before {
+  left: 28px;
+  border-top:  1px dashed rgba(201, 168, 76, 0.22);
+  border-left: 1px dashed rgba(201, 168, 76, 0.22);
+}
+body.magick .page-header::after {
+  right: 28px;
+  border-top:   1px dashed rgba(201, 168, 76, 0.22);
+  border-right: 1px dashed rgba(201, 168, 76, 0.22);
+}
+
+body.magick .hero { position: relative; }
+body.magick .hero::before,
+body.magick .hero::after {
+  content: '';
+  position: absolute;
+  bottom: 28px;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+body.magick .hero::before {
+  left: 28px;
+  border-bottom: 1px dashed rgba(201, 168, 76, 0.18);
+  border-left:   1px dashed rgba(201, 168, 76, 0.18);
+}
+body.magick .hero::after {
+  right: 28px;
+  border-bottom: 1px dashed rgba(201, 168, 76, 0.18);
+  border-right:  1px dashed rgba(201, 168, 76, 0.18);
+}
+
+body.magick .book-card { position: relative; }
+body.magick .book-card::before {
+  content: '';
+  position: absolute;
+  top: 7px; left: 7px;
+  width: 13px; height: 13px;
+  border-top:  1px dashed rgba(201, 168, 76, 0.18);
+  border-left: 1px dashed rgba(201, 168, 76, 0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+body.magick .book-card::after {
+  content: '';
+  position: absolute;
+  bottom: 7px; right: 7px;
+  width: 13px; height: 13px;
+  border-bottom: 1px dashed rgba(201, 168, 76, 0.18);
+  border-right:  1px dashed rgba(201, 168, 76, 0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.magick .featured-card { position: relative; }
+body.magick .featured-card::before {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 20px; height: 20px;
+  border-top:  1px dashed rgba(201, 168, 76, 0.2);
+  border-left: 1px dashed rgba(201, 168, 76, 0.2);
+  pointer-events: none;
+}
+body.magick .featured-card::after {
+  content: '';
+  position: absolute;
+  bottom: 10px; right: 10px;
+  width: 20px; height: 20px;
+  border-bottom: 1px dashed rgba(201, 168, 76, 0.2);
+  border-right:  1px dashed rgba(201, 168, 76, 0.2);
+  pointer-events: none;
+}
+
+
+/* ── Ritual boot sequence overlay ──────────────── */
+#magick-boot {
+  position: fixed;
+  inset: 0;
+  background: #09070d;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', 'Palatino Linotype', serif;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+}
+#magick-boot.fade-out { opacity: 0; }
+#magick-boot pre {
+  text-align: left;
+  line-height: 2.1;
+  font-size: clamp(0.62rem, 1.7vw, 0.85rem);
+  letter-spacing: 0.1em;
+  white-space: pre;
+}
+#magick-boot .mk-gold   { color: #c9a84c; text-shadow: 0 0 8px rgba(201, 168, 76, 0.7); }
+#magick-boot .mk-purple { color: #9b72cf; text-shadow: 0 0 8px rgba(155, 114, 207, 0.6); }
+#magick-boot .mk-dim    { color: #3a2860; }
+#magick-boot .mk-silver { color: #b8c0cc; text-shadow: 0 0 6px rgba(184, 192, 204, 0.4); }
+#magick-boot .mk-final  { color: #e2c06e; text-shadow: 0 0 20px rgba(226, 192, 110, 0.85), 0 0 50px rgba(201, 168, 76, 0.3); }

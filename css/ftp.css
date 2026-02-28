@@ -1,0 +1,990 @@
+/* ====================================================
+   FTP MODE
+   Mimics the classic terminal FTP client circa 1997–2003
+   WS_FTP / CuteFTP / NCurses aesthetic
+
+   Colors: DOS blue bg · white text · yellow accent
+           cyan links · gray UI chrome · black shadows
+   Applied when <body class="ftp">
+==================================================== */
+
+
+/* ── Custom properties ──────────────────────────── */
+body.ftp {
+  --bg:           #0000aa;
+  --bg-alt:       #000088;
+  --bg-card:      #000066;
+  --text:         #ffffff;
+  --text-muted:   #aaaaaa;
+  --text-sub:     #888888;
+  --accent:       #ffff00;
+  --accent-light: #ffff55;
+  --border:       #aaaaaa;
+  --border-light: #555555;
+  --nav-bg:       #000066;
+  --font-sans:    "Courier New", Courier, monospace;
+  --font-serif:   "Courier New", Courier, monospace;
+  --font-mono:    "Courier New", Courier, monospace;
+  --radius:       0px;
+  --radius-lg:    0px;
+  --shadow:       none;
+  --section-pad:  clamp(18px, 3vw, 36px);
+  --nav-height:   44px;
+  --pad-x:        clamp(12px, 3vw, 40px);
+}
+
+/* All text monospace, everywhere, no exceptions */
+body.ftp,
+body.ftp * {
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+/* Thinner line height for that cramped terminal feel */
+body.ftp {
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+
+/* ── Connection status bar (top pinned, always visible) ── */
+body.ftp::before {
+  content: "■ CONNECTED  rushkoff.com:21  |  User: anonymous  |  [F1] Help  [F2] DirList  [F5] Copy  [F10] Quit";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  line-height: 18px;
+  background: #aaaaaa;
+  color: #000000;
+  font-size: 11px !important;
+  padding: 0 8px;
+  z-index: 10001;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+
+/* Bump everything down to account for the status bar */
+body.ftp {
+  padding-top: 18px;
+}
+
+
+/* ── Transfer complete bar (bottom pinned) ──────── */
+body.ftp::after {
+  content: "226 Transfer complete.  |  8,423 bytes  |  0.12 sec  |  68.2 KB/s  |  Mode: ASCII  |  Type: Binary";
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  line-height: 18px;
+  background: #aaaaaa;
+  color: #000000;
+  font-size: 11px !important;
+  padding: 0 8px;
+  z-index: 10001;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+
+/* Avoid footer hiding behind the bottom bar */
+body.ftp .site-footer {
+  margin-bottom: 18px;
+}
+
+
+/* ── Navigation → FTP title bar / menu strip ────── */
+body.ftp .site-nav {
+  background: #000066;
+  border-top: 2px solid #ffffff;
+  border-bottom: 2px solid #aaaaaa;
+  box-shadow: none;
+  height: var(--nav-height);
+  top: 18px; /* below status bar */
+}
+
+body.ftp .nav-inner {
+  border: none;
+}
+
+body.ftp .nav-logo {
+  font-size: 0.8rem !important;
+  font-weight: normal !important;
+  color: #ffff00 !important;
+  text-shadow: none !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.ftp .nav-logo::before {
+  content: "FTP://";
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+
+body.ftp .nav-links a,
+body.ftp .nav-dropdown > button {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+body.ftp .nav-links a:hover,
+body.ftp .nav-dropdown > button:hover {
+  background: #aaaaaa;
+  color: #000000;
+  border-color: #ffffff;
+  text-shadow: none;
+}
+
+body.ftp .nav-links a.active {
+  color: #ffff00;
+  border-bottom: 1px solid #ffff00;
+  text-decoration: none;
+}
+
+body.ftp .nav-links a.active::after {
+  display: none;
+}
+
+body.ftp .dropdown-menu {
+  background: #000066;
+  border: 1px solid #aaaaaa;
+  border-top: 2px solid #ffffff;
+  border-radius: 0;
+  margin-top: 0;
+  box-shadow: 3px 3px 0 #000000;
+}
+
+body.ftp .dropdown-menu a {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding: 5px 14px;
+}
+
+body.ftp .dropdown-menu a:hover {
+  background: #aaaaaa;
+  color: #000000;
+}
+
+/* Hamburger in FTP mode */
+body.ftp .nav-hamburger span {
+  background: #ffffff;
+}
+
+/* Mobile nav */
+body.ftp .nav-mobile {
+  background: #000066;
+  border-top: 2px solid #aaaaaa;
+  top: calc(18px + var(--nav-height));
+}
+
+body.ftp .nav-mobile a {
+  color: #ffffff;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  border-bottom: 1px dashed #333366;
+  padding: 10px 20px;
+}
+
+body.ftp .nav-mobile a:hover {
+  background: #aaaaaa;
+  color: #000000;
+}
+
+body.ftp .mobile-label {
+  color: #aaaaaa;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 6px 20px 2px;
+}
+
+
+/* ── Page spacer — account for status bar + nav ─── */
+body.ftp .page-top {
+  padding-top: calc(18px + var(--nav-height) + 8px);
+}
+
+
+/* ── Hide all images — FTP shows filenames not pics ── */
+body.ftp img,
+body.ftp .book-cover-wrap,
+body.ftp .film-thumb-wrap,
+body.ftp .about-img-wrap,
+body.ftp .hero-image,
+body.ftp .featured-card-image,
+body.ftp .book-detail-cover,
+body.ftp .photo-grid figure {
+  display: none !important;
+}
+
+
+/* ── Headings → yellow panel headers ────────────── */
+body.ftp h1,
+body.ftp h2,
+body.ftp h3,
+body.ftp h4 {
+  color: #ffff00;
+  font-weight: normal;
+  font-size: inherit;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+body.ftp h1 {
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+}
+
+body.ftp h2 {
+  font-size: 1.05rem;
+}
+
+body.ftp h3 {
+  font-size: 0.9rem;
+  color: #55ffff;
+}
+
+body.ftp h4 {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+}
+
+/* Blinking block cursor on H1 */
+body.ftp h1::after {
+  content: "█";
+  animation: ftp-blink 0.7s step-end infinite;
+  color: #aaaaaa;
+  margin-left: 3px;
+  font-size: 1em;
+}
+
+@keyframes ftp-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+
+/* ── Labels ──────────────────────────────────────── */
+body.ftp .label {
+  color: #aaaaaa;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-shadow: none;
+}
+
+body.ftp .label::before {
+  content: "> ";
+  color: #ffff00;
+}
+
+
+/* ── Accent line → full-width horizontal rule ────── */
+body.ftp .accent-line {
+  width: 100%;
+  height: 1px;
+  background: #555555;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 1rem;
+}
+
+
+/* ── Body copy ───────────────────────────────────── */
+body.ftp p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #cccccc;
+  max-width: 80ch;
+}
+
+body.ftp .lead {
+  font-size: 0.92rem;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+
+/* ── Links ───────────────────────────────────────── */
+body.ftp a:not([class*="btn"]):not(.nav-logo):not(.nav-links a) {
+  color: #55ffff;
+  text-decoration: underline;
+}
+
+body.ftp a:not([class*="btn"]):not(.nav-logo):not(.nav-links a):hover {
+  color: #ffff00;
+  background: rgba(0, 0, 100, 0.4);
+  text-decoration: none;
+}
+
+
+/* ── Buttons → [ COMMAND ] style ─────────────────── */
+body.ftp .btn {
+  border: 1px solid #aaaaaa;
+  background: #000066;
+  color: #ffffff;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  letter-spacing: 0.08em;
+  box-shadow: 2px 2px 0 #000000;
+  border-radius: 0;
+}
+
+body.ftp .btn::before {
+  content: "[ ";
+  color: #aaaaaa;
+}
+
+body.ftp .btn::after {
+  content: " ]";
+  color: #aaaaaa;
+}
+
+body.ftp .btn-primary {
+  background: #000066;
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body.ftp .btn-primary:hover,
+body.ftp .btn-outline:hover {
+  background: #aaaaaa;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 1px 1px 0 #000000;
+}
+
+body.ftp .btn-outline {
+  border-color: #555555;
+  color: #aaaaaa;
+}
+
+
+/* ── Sections → FTP panel boxes ─────────────────── */
+body.ftp .section {
+  border-top: none;
+  padding: 16px 0;
+}
+
+body.ftp .section + .section {
+  border-top: 1px solid #333355;
+}
+
+/* Panel-box wrapper: give sections a "window" look */
+body.ftp .container > .section:not(:first-child) {
+  border-top: 1px dashed #333355;
+  padding-top: 14px;
+}
+
+
+/* ── Page header → directory path bar ───────────── */
+body.ftp .page-header {
+  background: #000055;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 2px solid #aaaaaa;
+  padding: 10px 0;
+}
+
+body.ftp .page-header h1 {
+  font-size: 1rem;
+}
+
+body.ftp .page-header::before {
+  content: "Remote: /rushkoff/  >>  ";
+  color: #aaaaaa;
+  font-size: 0.7rem;
+}
+
+
+/* ── Cards → dialog boxes ────────────────────────── */
+body.ftp .contact-card,
+body.ftp .archive-card,
+body.ftp .featured-card {
+  background: #000066;
+  border: 1px solid #aaaaaa;
+  border-top: 2px solid #ffffff;
+  box-shadow: 3px 3px 0 #000000;
+  border-radius: 0;
+  padding: 12px;
+}
+
+/* Fake dialog title bar */
+body.ftp .contact-card::before {
+  content: "┌── INFO ──────────────┐";
+  display: block;
+  color: #aaaaaa;
+  font-size: 0.65rem;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+body.ftp .archive-card {
+  border-top: 2px solid #ffff00;
+}
+
+body.ftp .archive-card::before {
+  content: "[ FILE ]";
+  display: block;
+  color: #ffff00;
+  font-size: 0.65rem;
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+}
+
+body.ftp .archive-card-icon {
+  color: #55ffff;
+}
+
+body.ftp .archive-card h4 {
+  color: #55ffff;
+}
+
+body.ftp .archive-card p {
+  color: #aaaaaa;
+  font-size: 0.78rem;
+}
+
+
+/* ── Bio strip / feature strip ───────────────────── */
+body.ftp .bio-strip {
+  background: #000055;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaaaaa;
+}
+
+body.ftp .role-pill {
+  border: 1px solid #555555;
+  background: transparent;
+  color: #55ffff;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 0;
+}
+
+body.ftp .role-pill::before {
+  content: "[";
+  color: #aaaaaa;
+  margin-right: 2px;
+}
+
+body.ftp .role-pill::after {
+  content: "]";
+  color: #aaaaaa;
+  margin-left: 2px;
+}
+
+
+/* ── Books grid → ls -la file listing ───────────── */
+body.ftp .books-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid #333355;
+}
+
+/* Column header row (fake, via :before on parent) */
+body.ftp .books-grid::before {
+  content: "Name                                    Date        Bytes    Type";
+  display: block;
+  padding: 4px 10px;
+  background: #000044;
+  color: #aaaaaa;
+  font-size: 0.7rem;
+  border-bottom: 1px solid #555555;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+body.ftp .book-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  border-bottom: 1px solid #111133;
+  border-radius: 0;
+  padding: 5px 10px;
+  background: transparent;
+  transform: none !important;
+  box-shadow: none;
+  transition: none;
+}
+
+body.ftp .book-card:hover {
+  background: #000088;
+  transform: none !important;
+  box-shadow: none;
+}
+
+body.ftp .book-card:nth-child(even) {
+  background: #00004a;
+}
+
+body.ftp .book-card:nth-child(even):hover {
+  background: #000088;
+}
+
+body.ftp .book-cover-wrap {
+  display: none !important;
+}
+
+/* [DOC] type indicator */
+body.ftp .book-card::before {
+  content: "[DOC]";
+  color: #55ffff;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  min-width: 46px;
+}
+
+body.ftp .book-title {
+  color: #ffffff;
+  font-size: 0.82rem;
+  text-transform: none;
+  flex: 1;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+body.ftp .book-title a {
+  color: #55ffff !important;
+  text-decoration: none;
+}
+
+body.ftp .book-title a:hover {
+  color: #ffff00 !important;
+  text-decoration: underline;
+  background: none;
+}
+
+/* Year displayed as "file date" */
+body.ftp .book-year {
+  color: #aaaaaa;
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+
+
+/* ── Press items → `ls` style listing ───────────── */
+body.ftp .press-section::before {
+  content: "150 Listing directory: /rushkoff/press/";
+  display: block;
+  color: #55ffff;
+  font-size: 0.7rem;
+  margin-bottom: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #333355;
+}
+
+body.ftp .press-item {
+  border-bottom: 1px dashed #222244;
+  padding: 6px 2px;
+  font-size: 0.82rem;
+}
+
+body.ftp .press-item::before {
+  content: "-rw-r--r--  1  rushkoff";
+  display: inline;
+  color: #555577;
+  font-size: 0.7rem;
+  margin-right: 10px;
+}
+
+body.ftp .press-item:hover {
+  background: #000066;
+}
+
+body.ftp .press-pub {
+  color: #aaaaaa;
+}
+
+body.ftp .press-title {
+  color: #55ffff;
+}
+
+body.ftp .press-title:hover {
+  color: #ffff00;
+}
+
+body.ftp .press-date {
+  color: #555577;
+  font-size: 0.72rem;
+}
+
+body.ftp .press-badge {
+  border: 1px solid #555555;
+  background: transparent;
+  color: #aaaaaa;
+  font-size: 0.62rem;
+  padding: 1px 4px;
+  border-radius: 0;
+}
+
+
+/* ── Events → server log style ───────────────────── */
+body.ftp .event-item {
+  border-bottom: 1px dashed #222244;
+  border-top: none;
+  padding: 7px 2px;
+  font-size: 0.82rem;
+}
+
+body.ftp .event-item::before {
+  content: "> ";
+  color: #ffff00;
+}
+
+body.ftp .event-item:first-child {
+  border-top: 1px solid #333355;
+}
+
+body.ftp .event-date {
+  color: #aaaaaa;
+  min-width: 100px;
+  display: inline-block;
+}
+
+body.ftp .event-venue {
+  color: #55ffff;
+}
+
+
+/* ── Films → directory view ──────────────────────── */
+body.ftp .films-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+body.ftp .film-item {
+  border-bottom: 1px dashed #222244;
+  padding: 8px 2px;
+  font-size: 0.82rem;
+}
+
+body.ftp .film-item::before {
+  content: "[VID] ";
+  color: #55ffff;
+  font-size: 0.75rem;
+}
+
+body.ftp .film-link {
+  color: #55ffff;
+  text-decoration: underline;
+  font-size: 0.82rem;
+}
+
+body.ftp .film-link:hover {
+  color: #ffff00;
+}
+
+body.ftp .film-desc {
+  color: #aaaaaa;
+  font-size: 0.78rem;
+  margin-top: 3px;
+  padding-left: 42px;
+}
+
+
+/* ── About page ──────────────────────────────────── */
+body.ftp .about-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+body.ftp .about-img-wrap {
+  display: none !important;
+}
+
+body.ftp .cred-item {
+  border-bottom: 1px dashed #222244;
+  font-size: 0.82rem;
+  padding: 5px 2px;
+}
+
+/* OK checkmark for credentials */
+body.ftp .cred-item::before {
+  content: "  OK  ";
+  color: #55ff55;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  margin-right: 6px;
+}
+
+
+/* ── Contact cards ───────────────────────────────── */
+body.ftp .contact-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.ftp .contact-card h3 {
+  color: #ffff00;
+}
+
+body.ftp .contact-card h3::before {
+  content: "[ ";
+  color: #aaaaaa;
+}
+
+body.ftp .contact-card h3::after {
+  content: " ]";
+  color: #aaaaaa;
+}
+
+body.ftp .social-btn {
+  border: 1px solid #555555;
+  background: transparent;
+  color: #55ffff;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 0;
+  text-transform: uppercase;
+}
+
+body.ftp .social-btn:hover {
+  background: #aaaaaa;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+
+/* ── Hero section (home page) ────────────────────── */
+body.ftp .hero {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #333355;
+}
+
+/* ASCII-art style welcome box */
+body.ftp .hero-text::before {
+  content: "╔══════════════════════════════════╗\A║  230 User anonymous logged in.    ║\A╚══════════════════════════════════╝";
+  display: block;
+  white-space: pre;
+  color: #555577;
+  font-size: 0.65rem;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+body.ftp .hero-title {
+  font-size: clamp(0.95rem, 2vw, 1.3rem);
+  line-height: 1.2;
+}
+
+body.ftp .hero-desc {
+  color: #cccccc;
+  font-size: 0.85rem;
+  max-width: 65ch;
+}
+
+
+/* ── Featured card ───────────────────────────────── */
+body.ftp .featured-card {
+  flex-direction: column !important;
+}
+
+body.ftp .featured-card-image {
+  display: none !important;
+}
+
+body.ftp .featured-label {
+  color: #aaaaaa;
+}
+
+body.ftp .featured-title {
+  color: #ffff00;
+  font-size: 1rem;
+}
+
+body.ftp .featured-desc {
+  color: #cccccc;
+  font-size: 0.85rem;
+}
+
+
+/* ── Press TOC ───────────────────────────────────── */
+body.ftp .press-toc {
+  background: #000055;
+  border: 1px solid #aaaaaa;
+  border-top: 2px solid #ffffff;
+  box-shadow: 3px 3px 0 #000000;
+}
+
+body.ftp .press-toc summary {
+  color: #ffff00;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+}
+
+body.ftp .press-toc a {
+  color: #55ffff;
+  font-size: 0.78rem;
+}
+
+body.ftp .press-toc a:hover {
+  color: #ffff00;
+}
+
+
+/* ── Book detail page ────────────────────────────── */
+body.ftp .book-detail-cover {
+  display: none !important;
+}
+
+body.ftp .book-detail-body {
+  border: 1px solid #333355;
+  padding: 14px;
+  background: #000055;
+}
+
+body.ftp .book-detail-title {
+  color: #ffff00;
+}
+
+body.ftp .book-detail-subtitle {
+  color: #aaaaaa;
+  font-size: 0.82rem;
+}
+
+body.ftp .book-meta {
+  color: #aaaaaa;
+  font-size: 0.78rem;
+  border: 1px dashed #333355;
+  padding: 8px 10px;
+}
+
+/* Also Read grid → file listing */
+body.ftp .also-read-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid #333355;
+}
+
+body.ftp .also-read-item {
+  padding: 5px 10px;
+  border-bottom: 1px solid #111133;
+  font-size: 0.82rem;
+}
+
+body.ftp .also-read-item::before {
+  content: "[DOC] ";
+  color: #55ffff;
+}
+
+body.ftp .also-read-item:hover {
+  background: #000088;
+}
+
+
+/* ── Footer → connection info bar ───────────────── */
+body.ftp .site-footer {
+  background: #000055;
+  border-top: 2px solid #aaaaaa;
+  padding: 10px 0;
+  color: #aaaaaa;
+  font-size: 0.75rem;
+}
+
+body.ftp .site-footer * {
+  font-size: 0.72rem !important;
+}
+
+body.ftp .footer-logo {
+  color: #ffff00 !important;
+  text-shadow: none !important;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+}
+
+body.ftp .footer-logo::before {
+  content: "FTP> cd / | ";
+  color: #aaaaaa;
+}
+
+body.ftp .site-footer a {
+  color: #55ffff !important;
+  text-decoration: underline;
+}
+
+body.ftp .site-footer a:hover {
+  color: #ffff00 !important;
+  background: #000088;
+  text-decoration: none;
+}
+
+body.ftp .footer-col-label {
+  color: #555577;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body.ftp .footer-bottom {
+  border-top: 1px dashed #333355;
+  color: #555577;
+  font-size: 0.65rem !important;
+  padding-top: 6px;
+  margin-top: 8px;
+}
+
+body.ftp .footer-bottom::before {
+  content: "221 Goodbye. You have transferred 89,234 bytes in 14 files.  |  ";
+  color: #55ffff;
+}
+
+
+/* ── Lightbox ─────────────────────────────────────── */
+body.ftp #lightbox {
+  background: rgba(0, 0, 100, 0.95);
+}
+
+body.ftp #lightbox-close {
+  color: #ffff00;
+  border: 1px solid #aaaaaa;
+  background: #000066;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+}
+
+
+/* ── Scrollbar — terminal blue ────────────────────── */
+body.ftp ::-webkit-scrollbar {
+  width: 12px;
+  background: #000044;
+}
+
+body.ftp ::-webkit-scrollbar-thumb {
+  background: #555577;
+  border: 1px solid #333355;
+}
+
+body.ftp ::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
+
+
+/* ── FTP connect overlay ──────────────────────────── */
+#ftp-connect {
+  scrollbar-width: none;
+}
+
+#ftp-connect::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,282 @@
+/* =====================================================
+   MINIMAL THEME
+   White · Black · Space · Nothing extra
+   ===================================================== */
+
+/* ── Base ────────────────────────────────────────── */
+body.minimal {
+  background: #fff;
+  color: #111;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+body.minimal *,
+body.minimal *::before,
+body.minimal *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* ── Nav ─────────────────────────────────────────── */
+body.minimal .site-nav {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+body.minimal .site-nav a,
+body.minimal .site-nav button {
+  color: #111;
+  font-family: inherit;
+}
+
+body.minimal .nav-logo {
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  font-weight: normal;
+}
+
+body.minimal .nav-mobile {
+  background: #fff;
+  color: #111;
+}
+
+body.minimal .nav-mobile a,
+body.minimal .nav-mobile button {
+  color: #111;
+  border-bottom: 1px solid #eee;
+}
+
+body.minimal .nav-hamburger span {
+  background: #111;
+}
+
+/* ── Hero ────────────────────────────────────────── */
+body.minimal .hero {
+  background: #fff;
+  padding: 5rem 0 4rem;
+  min-height: unset;
+}
+
+body.minimal .hero h1 {
+  font-family: 'Georgia', serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  line-height: 1.1;
+  color: #111;
+}
+
+body.minimal .hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+body.minimal .hero .lead {
+  color: #555;
+  font-size: 1rem;
+  max-width: 38ch;
+}
+
+body.minimal .hero-image img {
+  filter: grayscale(100%);
+  opacity: 0.88;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+body.minimal .btn {
+  background: none;
+  border: 1px solid #111;
+  color: #111;
+  font-family: inherit;
+  font-size: 0.85rem;
+  border-radius: 0;
+  letter-spacing: 0.05em;
+  padding: 0.45rem 1.2rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+body.minimal .btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+body.minimal .btn-primary {
+  background: #111;
+  color: #fff;
+}
+
+body.minimal .btn-primary:hover {
+  background: #444;
+  border-color: #444;
+}
+
+/* ── Sections ────────────────────────────────────── */
+body.minimal .section {
+  background: #fff;
+  padding: 3rem 0;
+}
+
+body.minimal .label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #aaa;
+  font-family: inherit;
+  border: none;
+}
+
+body.minimal .section h2,
+body.minimal .section h3 {
+  font-family: 'Georgia', serif;
+  font-weight: normal;
+}
+
+/* ── Events ──────────────────────────────────────── */
+body.minimal .event-item {
+  background: none;
+  border: none;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+body.minimal .event-date {
+  color: #888;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+body.minimal .event-name {
+  font-size: 1rem;
+  color: #111;
+}
+
+body.minimal .event-venue {
+  color: #888;
+  font-size: 0.875rem;
+}
+
+body.minimal .event-link {
+  color: #111;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+body.minimal .event-link:hover {
+  border-color: #111;
+}
+
+/* ── Bio strip ───────────────────────────────────── */
+body.minimal .bio-strip {
+  background: #fff;
+}
+
+body.minimal .role-pill {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  color: #777;
+  font-size: 0.78rem;
+}
+
+/* ── Featured card ───────────────────────────────── */
+body.minimal .featured-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 0;
+}
+
+body.minimal .featured-card img {
+  display: none;
+}
+
+/* ── Book cards ──────────────────────────────────── */
+body.minimal .book-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 0;
+}
+
+body.minimal .book-card img {
+  display: none;
+}
+
+body.minimal .book-card-body {
+  padding: 1.25rem;
+}
+
+/* ── Page headers ────────────────────────────────── */
+body.minimal .page-header {
+  background: #fff;
+  padding: 4rem 0 2rem;
+}
+
+body.minimal .page-header h1 {
+  font-family: 'Georgia', serif;
+  font-weight: normal;
+  font-style: italic;
+  color: #111;
+}
+
+body.minimal .page-header .lead {
+  color: #555;
+}
+
+/* ── Press page ──────────────────────────────────── */
+body.minimal .press-toc {
+  background: #fff;
+  border: none;
+}
+
+body.minimal .press-toc a {
+  color: #111;
+  border-bottom: 1px solid #eee;
+}
+
+body.minimal .press-section summary {
+  border-bottom: 1px solid #e8e8e8;
+  background: #fff;
+  color: #111;
+}
+
+body.minimal .press-item {
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+
+/* ── Footer: hide ────────────────────────────────── */
+body.minimal .site-footer {
+  display: none;
+}
+
+/* ── Home page: keep only hero + events ──────────── */
+body.minimal[data-page="home"] .bio-strip {
+  display: none;
+}
+
+body.minimal[data-page="home"] section:has(.featured-card) {
+  display: none;
+}
+
+/* ── Dropdown ────────────────────────────────────── */
+body.minimal .dropdown-menu {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 0;
+}
+
+body.minimal .dropdown-menu a,
+body.minimal .dropdown-menu button {
+  color: #111;
+}
+
+body.minimal .dropdown-menu a:hover,
+body.minimal .dropdown-menu button:hover {
+  background: #f5f5f5;
+  color: #111;
+}
