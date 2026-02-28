@@ -1,7 +1,7 @@
 /* ============================================================
    RUSHKOFF.COM — STYLES
    ============================================================
-   Fonts: Inter (sans) + Playfair Display (serif) via Google Fonts
+   Fonts: Inter (sans) + Oswald (headings) via Google Fonts
    Colors: dark theme, warm white text, crimson accent
    ============================================================ */
 
@@ -25,7 +25,7 @@
   /* Typography */
   --font-sans:
     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-serif: "Oswald", sans-serif;
   --font-mono: "JetBrains Mono", "Courier New", monospace;
 
   /* Layout */
