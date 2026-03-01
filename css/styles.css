@@ -32,7 +32,7 @@
   --max-width: 1140px;
   --nav-height: 72px;
   --pad-x: clamp(20px, 5vw, 80px);
-  --section-pad: clamp(64px, 9vw, 128px);
+  --section-pad: clamp(48px, 6vw, 80px);
 
   /* Effects */
   --radius: 3px;
@@ -1294,6 +1294,21 @@ a.event-name:hover {
 .lightbox-close:hover {
   color: #fff;
 }
+
+.lightbox-download {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  transition: color var(--t);
+}
+.lightbox-download:hover { color: #fff; }
 
 /* ========================
    ABOUT

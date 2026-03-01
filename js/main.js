@@ -242,16 +242,19 @@ function initThemePicker() {
    LIGHTBOX (photos page)
 ======================== */
 function initLightbox() {
-  const box     = document.getElementById('lightbox');
-  const boxImg  = document.getElementById('lightbox-img');
+  const box      = document.getElementById('lightbox');
+  const boxImg   = document.getElementById('lightbox-img');
+  const boxLink  = document.getElementById('lightbox-download');
   const closeBtn = document.getElementById('lightbox-close');
   if (!box || !boxImg) return;
 
   document.querySelectorAll('.photo-grid figure').forEach(fig => {
     fig.addEventListener('click', () => {
-      const img = fig.querySelector('img');
-      boxImg.src = img.src;
-      boxImg.alt = img.alt;
+      const img   = fig.querySelector('img');
+      const hires = fig.dataset.hires || img.src;
+      boxImg.src  = hires;
+      boxImg.alt  = img.alt;
+      if (boxLink) boxLink.href = hires;
       box.classList.add('open');
       document.body.style.overflow = 'hidden';
     });
