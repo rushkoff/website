@@ -603,17 +603,13 @@ strong {
   aspect-ratio: 3/4;
   object-fit: cover;
   /*object-position: right center;*/
-  border-radius: var(--radius);
   filter: grayscale(15%);
-  box-shadow: var(--shadow);
 }
 
 .hero-image::after {
   content: "";
   position: absolute;
   inset: 0;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
   pointer-events: none;
 }
 
