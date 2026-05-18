@@ -645,6 +645,11 @@ strong {
   border-radius: 100px;
   color: var(--text-sub);
   white-space: nowrap;
+  text-decoration: none;
+}
+a.role-pill:hover {
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 /* ========================
