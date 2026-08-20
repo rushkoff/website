@@ -32,6 +32,26 @@
         height: 18px;
         flex: none;
       }
+      /* Compact hero on Team Human page so the player is visible without scrolling */
+      body[data-page="teamhuman"] .page-header {
+        padding: 1.25rem 0 1rem;
+      }
+      body[data-page="teamhuman"] .page-header .label {
+        margin-bottom: 0.5rem;
+      }
+      body[data-page="teamhuman"] .page-header h1 {
+        font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+        margin-bottom: 0.4rem;
+      }
+      body[data-page="teamhuman"] .page-header .lead {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        max-width: 640px;
+        margin-top: 0.4rem;
+      }
+      body[data-page="teamhuman"] main > .section:first-of-type {
+        padding-top: 1.25rem;
+      }
     </style>
   </head>
   <body data-page="teamhuman">
