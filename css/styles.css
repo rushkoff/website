@@ -9,18 +9,18 @@
    CUSTOM PROPERTIES
 ======================== */
 :root {
-  /* Colors */
-  --bg: #080808;
-  --bg-alt: #111111;
-  --bg-card: #181818;
-  --text: #e6ddd0;
-  --text-muted: #606060;
-  --text-sub: #999;
+  /* Colors — light theme (black on warm paper white, crimson accent) */
+  --bg: #faf9f6;
+  --bg-alt: #f1efe9;
+  --bg-card: #f4f2ec;
+  --text: #1a1a1a;
+  --text-muted: #6f6f6f;
+  --text-sub: #545454;
   --accent: #c0392b;
   --accent-light: #e74c3c;
-  --border: #1c1c1c;
-  --border-light: #282828;
-  --nav-bg: rgba(8, 8, 8, 0.92);
+  --border: #e7e6e3;
+  --border-light: #dcdbd7;
+  --nav-bg: rgba(255, 255, 255, 0.9);
 
   /* Typography */
   --font-sans:
@@ -32,12 +32,12 @@
   --max-width: 1140px;
   --nav-height: 72px;
   --pad-x: clamp(20px, 5vw, 80px);
-  --section-pad: clamp(48px, 6vw, 80px);
+  --section-pad: clamp(28px, 4vw, 44px);
 
   /* Effects */
   --radius: 3px;
   --radius-lg: 8px;
-  --shadow: 0 6px 32px rgba(0, 0, 0, 0.5);
+  --shadow: 0 6px 22px rgba(0, 0, 0, 0.1);
   --t: 0.18s ease;
   --t-slow: 0.36s ease;
 }
@@ -203,7 +203,7 @@ strong {
 }
 .btn-outline:hover {
   border-color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* ========================
@@ -224,7 +224,7 @@ strong {
 }
 
 .site-nav.scrolled {
-  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 }
 
 .nav-inner {
@@ -275,7 +275,7 @@ strong {
 .nav-links a:hover,
 .nav-dropdown > button:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .nav-links a.active {
@@ -354,7 +354,7 @@ strong {
 }
 .dropdown-menu a:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Theme picker */
@@ -395,7 +395,7 @@ strong {
 }
 .theme-option:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 .theme-option.active {
   color: var(--text);
@@ -533,7 +533,7 @@ strong {
    PAGE HEADER (interior pages)
 ======================== */
 .page-header {
-  padding: clamp(60px, 9vw, 110px) 0 clamp(40px, 5vw, 64px);
+  padding: clamp(34px, 5vw, 56px) 0 clamp(22px, 3vw, 34px);
   border-bottom: 1px solid var(--border);
 }
 .page-header h1 {
@@ -549,7 +549,7 @@ strong {
    HOME — HERO
 ======================== */
 .hero {
-  padding: clamp(90px, 14vw, 180px) 0 clamp(64px, 9vw, 120px);
+  padding: clamp(88px, 11vw, 132px) 0 clamp(40px, 6vw, 72px);
   position: relative;
   overflow: hidden;
 }
@@ -669,7 +669,7 @@ a.role-pill:hover {
 .featured-card img {
   width: 100%;
   border-radius: var(--radius);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
 }
 
 .featured-card h3 {
@@ -841,14 +841,14 @@ a.event-name:hover {
   aspect-ratio: 2/3;
   object-fit: cover;
   border-radius: var(--radius);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
   transition:
     box-shadow var(--t),
     filter var(--t);
 }
 .book-card:hover .book-cover {
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75);
-  filter: brightness(1.07);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.03);
 }
 
 .book-title {
@@ -878,7 +878,7 @@ a.event-name:hover {
   grid-template-columns: 300px 1fr;
   gap: 2.5rem;
   align-items: start;
-  padding: 3.5rem 0;
+  padding: 2.25rem 0;
   border-bottom: 1px solid var(--border);
 }
 .film-item:first-child {
@@ -1193,7 +1193,7 @@ a.event-name:hover {
 .social-btn:hover {
   color: var(--text);
   border-color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 @media (max-width: 900px) {
@@ -1396,7 +1396,7 @@ a.event-name:hover {
 .book-detail-cover img {
   width: 100%;
   border-radius: var(--radius);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .book-detail-buy {
@@ -1692,8 +1692,8 @@ a.event-name:hover {
 .site-footer {
   background: var(--bg-alt);
   border-top: 1px solid var(--border);
-  padding: 5rem 0 0;
-  margin-top: 8rem;
+  padding: 3.25rem 0 0;
+  margin-top: 4rem;
 }
 
 .footer-inner {
