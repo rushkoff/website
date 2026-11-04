@@ -1819,3 +1819,11 @@ body[data-page="home"] .site-nav:not(.scrolled) .nav-hamburger span{background:#
 body[data-page="home"] .site-nav .nav-logo{transition:opacity var(--t);}
 body[data-page="home"] .site-nav:not(.scrolled) .nav-logo{opacity:0;pointer-events:none;}
 body[data-page="home"] .site-nav:not(.scrolled) .nav-links a.active::after{opacity:0;}
+
+
+/* Featured: podcast cover art replaces the old video embed */
+.featured-card--cover{grid-template-columns:300px 1fr;}
+.featured-cover{display:block;}
+.featured-cover img{aspect-ratio:1/1;object-fit:cover;transition:transform var(--t),box-shadow var(--t);}
+.featured-cover:hover img{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.22);}
+@media(max-width:740px){.featured-card--cover{grid-template-columns:1fr;}.featured-cover{max-width:320px;}}
