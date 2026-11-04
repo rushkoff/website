@@ -1813,3 +1813,9 @@ body[data-page="home"] .site-nav:not(.scrolled) .nav-hamburger span{background:#
 .bio-portrait{margin-top:.25rem;}
 .bio-portrait img{width:100%;height:auto;display:block;border-radius:var(--radius);}
 @media(max-width:860px){.bio-grid{grid-template-columns:1fr;}.bio-portrait{max-width:300px;order:-1;}}
+
+
+/* Homepage: hide wordmark + HOME underline at top of hero, reveal on scroll */
+body[data-page="home"] .site-nav .nav-logo{transition:opacity var(--t);}
+body[data-page="home"] .site-nav:not(.scrolled) .nav-logo{opacity:0;pointer-events:none;}
+body[data-page="home"] .site-nav:not(.scrolled) .nav-links a.active::after{opacity:0;}
