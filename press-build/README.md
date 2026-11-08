@@ -1,3 +1,14 @@
+# If you are taking this over
+
+You do not need the usual Cowork assistant or this account to keep the Press page
+updated. This page is generated from the Google Doc below by `build_press.py`, and
+the exact steps are in this file. Hand this repo to any web developer or AI coding
+assistant, point them here, and they can do it. The phrase "refresh the press
+archive" is only a Cowork shortcut; the portable procedure is the steps below.
+See `HANDOFF.md` in the repo root for how the whole site works.
+
+---
+
 # Press archive build
 
 `press.html` (the site's Press page) is generated from a Google Doc, which is
