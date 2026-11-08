@@ -1,0 +1,55 @@
+name: Update latest YouTube video
+
+# Keeps the podcast page's embedded video pointed at Douglas Rushkoff's
+# newest NON-Short YouTube upload. Runs once a day, and can be run on
+# demand from the Actions tab (Run workflow).
+
+on:
+  schedule:
+    - cron: "0 11 * * *"   # daily at 11:00 UTC
+  workflow_dispatch: {}      # manual "Run workflow" button
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Point embed at latest non-Short upload
+        run: |
+          CHANNEL_ID="UCJdUEh2Wh4fnswTLmqoEnhg"
+          FEED="https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}"
+          IDS=$(curl -sL "$FEED" | grep -o '<yt:videoId>[^<]*' | sed 's/<yt:videoId>//')
+          LATEST=""
+          for id in $IDS; do
+            echo "$id" | grep -qE '^[A-Za-z0-9_-]{11}$' || continue
+            # A real Short returns 200 at /shorts/<id>; a normal video redirects (3xx) to /watch.
+            code=$(curl -s -o /dev/null -w "%{http_code}" -I -A "Mozilla/5.0" --max-time 15 "https://www.youtube.com/shorts/${id}")
+            if [ "$code" = "200" ]; then
+              echo "Skipping Short: $id"
+            else
+              LATEST="$id"
+              echo "Picked latest non-Short: $id (probe $code)"
+              break
+            fi
+          done
+          if echo "$LATEST" | grep -qE '^[A-Za-z0-9_-]{11}$'; then
+            sed -i -E "s#(youtube\.com/embed/)[A-Za-z0-9_-]{11}#\1${LATEST}#g" podcast/index.html
+          else
+            echo "No non-Short video found; leaving the page unchanged."
+          fi
+
+      - name: Commit if the video changed
+        run: |
+          if git diff --quiet; then
+            echo "Embed already current; nothing to commit."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add podcast/index.html
+            git commit -m "Auto-update podcast page to latest YouTube video"
+            git push
+          fi
