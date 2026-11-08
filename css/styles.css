@@ -1827,3 +1827,7 @@ body[data-page="home"] .site-nav:not(.scrolled) .nav-links a.active::after{opaci
 .featured-cover img{aspect-ratio:1/1;object-fit:cover;transition:transform var(--t),box-shadow var(--t);}
 .featured-cover:hover img{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.22);}
 @media(max-width:740px){.featured-card--cover{grid-template-columns:1fr;}.featured-cover{max-width:320px;}}
+
+/* Home page: keep Archive dropdown items dark — the dropdown panel is light even when the nav is transparent over the hero */
+body[data-page="home"] .site-nav:not(.scrolled) .dropdown-menu a{color:var(--text-muted);}
+body[data-page="home"] .site-nav:not(.scrolled) .dropdown-menu a:hover{color:var(--text);background:rgba(0,0,0,0.05);}
