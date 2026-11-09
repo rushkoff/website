@@ -1,0 +1,59 @@
+name: Refresh Press archive
+
+# Rebuilds press.html from the master Google Doc once a day, so new entries
+# added to the doc appear on the site automatically. Can also be run on demand
+# from the Actions tab (Run workflow). It refuses to publish if the doc fetch
+# or the rebuild looks wrong, so a bad pull can never blank the page.
+
+on:
+  schedule:
+    - cron: "30 11 * * *"   # daily at 11:30 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild press.html from the Google Doc
+        run: |
+          DOC_ID="1EA7D1hFewzyXqpP9PWxglK1lnXp0zywJDiXC5zfHkFw"
+          URL="https://docs.google.com/document/d/${DOC_ID}/export?format=md"
+          curl -sL --max-time 60 "$URL" -o press_doc.md
+          echo "Fetched $(wc -c < press_doc.md) bytes, $(wc -l < press_doc.md) lines."
+
+          # Guard 1: the doc must be substantial and have section headings.
+          if [ "$(wc -c < press_doc.md)" -lt 5000 ] || ! grep -q '^## ' press_doc.md; then
+            echo "ERROR: doc fetch looks wrong (small, or no '## ' headings). Not changing the page."
+            exit 1
+          fi
+
+          python3 press-build/build_press.py press_doc.md press.html.new
+
+          # Guard 2: the rebuilt page must keep ~all of the existing entries.
+          CUR=$(grep -o '"u":' press.html     | wc -l)
+          NEW=$(grep -o '"u":' press.html.new | wc -l)
+          echo "Entries: current=$CUR  rebuilt=$NEW"
+          if [ "$NEW" -lt 50 ] || [ "$NEW" -lt $(( CUR * 80 / 100 )) ]; then
+            echo "ERROR: rebuilt page has too few entries ($NEW vs $CUR). Parse likely failed. Not changing the page."
+            exit 1
+          fi
+
+          mv press.html.new press.html
+          rm -f press_doc.md
+
+      - name: Commit if the page changed
+        run: |
+          if git diff --quiet -- press.html; then
+            echo "Press page already current; nothing to commit."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add press.html
+            git commit -m "Auto-refresh press archive from Google Doc"
+            git push
+          fi
