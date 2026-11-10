@@ -44,3 +44,39 @@ runs this procedure for you (it has access to the Google Doc).
 - `OVERRIDE` at the top of `build_press.py` holds manual date corrections the doc
   can't express yet (currently: the NewsNation "MK Ultra" interview → May 13, 2026,
   because the doc has it as 2025). Fix the doc line and you can remove the override.
+
+---
+
+## How to format a new entry (give this to whoever/whatever edits the doc)
+
+The Press page is generated from the Google Doc by `build_press.py`, which parses a
+specific structure. A new entry must match the existing ones or it may be
+mislabeled or skipped. Rules:
+
+1. **Section.** Put it under the correct heading, at the TOP (newest first). Sections:
+   Interviews, Reviews, Profiles, Talks, Documentaries/Movies, TV/Documentary
+   appearances, Radio/Podcasts, Served as source, Miscellaneous.
+
+2. **One line: a hyperlinked title, then source + date.** The title is the clickable
+   text (hyperlinked to the piece's URL). Right after it, in plain text: the source
+   (outlet or show name), then the date. In Markdown terms the doc renders as
+   `[Title](URL) Source, Date`.
+
+3. **Media tag — only when it differs from the section default.** Defaults: Talks =
+   video, Radio/Podcasts = audio, Interviews/Reviews/Profiles = text. If an entry is
+   a different type, mark it right after the link: `(video)`, `(audio)` (or
+   `(podcast)`), or `(text)`. Example: a YouTube video placed in Radio/Podcasts
+   (default audio) must be tagged `(video)` or it will show an "audio" badge.
+
+4. **Asterisk is rare.** Prefix with `*` ONLY for a genuinely major, career-marker
+   piece. It is used very sparingly (two entries in the whole archive).
+
+5. **Clean the title.** Use the piece's real title; drop platform cruft like a
+   trailing " | Douglas Rushkoff" that YouTube appends.
+
+**Worked example** (a YouTube podcast interview, added to the top of Radio/Podcasts):
+
+    [Big Tech CEOs Are Betting On Our Demise](https://youtu.be/Cx-nW3PcsrA) (video) The Smart Cookies Podcast, November 9, 2026
+
+After the doc is edited, the daily "Refresh Press archive" GitHub Action (or a manual
+run of it) rebuilds and publishes the page within a day.
