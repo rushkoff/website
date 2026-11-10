@@ -68,6 +68,15 @@ def parse_doc(text):
             continue
         body = s.split('\n', 1)[1] if '\n' in s else ''
         secname, defmedia = secinfo(head)
+        # --- Normalize entry separation (robust to how the doc is exported) ---
+        # Google Docs sometimes exports a link title with a soft line-break before
+        # the "](url)" part, and sometimes drops the blank line between entries.
+        # 1) Pull a wrapped "](url)" back up onto its title line.
+        body = re.sub(r'[ \t]*\n[ \t]*\]\(', '](', body)
+        # 2) Guarantee every entry anchor (a "[title](url)" link or a bare <url>)
+        #    starts its own block, even when the blank line between entries is missing.
+        body = re.sub(r'(?<!\n)\n([ \t]*\\?\*?[ \t]*\[)', r'\n\n\1', body)
+        body = re.sub(r'(?<!\n)\n([ \t]*\\?\*?[ \t]*<https?://)', r'\n\n\1', body)
         blocks = [b.strip() for b in re.split(r'\n\s*\n', body) if b.strip()]
         for b in blocks:
             important = bool(re.match(r'^\\?\*\s*', b)); b2 = re.sub(r'^\\?\*\s*', '', b)
